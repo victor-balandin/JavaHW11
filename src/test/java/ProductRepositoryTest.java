@@ -1,4 +1,5 @@
 import org.example.Book;
+import org.example.NotFoundException;
 import org.example.Product;
 import org.example.ProductRepository;
 import org.junit.jupiter.api.Assertions;
@@ -51,6 +52,24 @@ public class ProductRepositoryTest {
 
 
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testRemoveProductWhenIdNotExisted() {
+        ProductRepository repository = new ProductRepository();
+        Book book1 = new Book(1, "Мастер и Маргарита", 750, "Михаил Булгаков");
+        Book book2 = new Book(2, "Война и мир", 1700, "Лев Толстой");
+        Book book3 = new Book(3, "Тихий Дон", 900, "Михаил Шолохов");
+
+        repository.save(book1);
+        repository.save(book2);
+        repository.save(book3);
+        repository.removeById(1);
+
+        Assertions.assertThrows(NotFoundException.class,
+                () -> repository.removeById(4)
+                );
+
     }
 
 }
